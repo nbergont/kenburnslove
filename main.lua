@@ -28,7 +28,7 @@ function love.load(arg)
 	
 	album = Album()
 	album:set(album_list[1])
-	index = 2
+	index = 1
 	
 	elapsed = 0
 end
@@ -39,13 +39,13 @@ function love.update(dt)
 		album:update(dt)
 		
 		if album:isFinished() then
-			album:set(album_list[index])
 			index = index + 1
 			elapsed = 0
 			if index > #album_list then
 				shuffle(album_list)
 				index = 1 
 			end
+			album:set(album_list[index])
 		end
 	else
 		elapsed = elapsed + dt
