@@ -3,9 +3,7 @@ Title = Object:extend()
 
 local title_font = love.graphics.newFont("Hughs.otf", 500)
 
-function is_raspberry_pi()
-	return love.system.getOS() == "Linux" and io.popen('uname -n','r'):read('*l') == "pilove"
-end
+local is_raspberry_pi = love.system.getOS() == "Linux" and io.popen('uname -n','r'):read('*l') == "pilove"
 
 
 function Title:new()
@@ -37,7 +35,7 @@ function Title:render()
 	local main_title = self.label:gsub("%s+%((.+)%)", "")
 	
 	-- Hack on RPI where glClear() not working on canvas !
-	if is_raspberry_pi() then
+	if is_raspberry_pi then
 		self.canvas_blur = love.graphics.newCanvas(love.graphics.getWidth(), love.graphics.getHeight())
 		self.canvas_title = love.graphics.newCanvas(love.graphics.getWidth(), love.graphics.getHeight())
 	end
@@ -56,7 +54,6 @@ function Title:render()
 	-- Blur effect on canvas_blur
 	love.graphics.setCanvas(self.canvas_title)
 	love.graphics.clear()
-	self.shader:send("blurRadius", love.graphics.getWidth()*0.002)
 	love.graphics.setShader(self.shader)
 	love.graphics.draw(self.canvas_blur)
 	love.graphics.setShader()
