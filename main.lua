@@ -1,6 +1,8 @@
 Object = require "classic"
 require "album"
 
+is_raspberry_pi = love.system.getOS() == "Linux" and io.popen('uname -n','r'):read('*l') == "pilove"
+
 function shuffle(tbl)
   local size = #tbl
   for i = size, 1, -1 do
@@ -12,6 +14,13 @@ end
 function love.load(arg)
 	-- Hide cursor
 	love.mouse.setVisible(false)
+	
+	-- Randomize seed on rpi
+	if is_raspberry_pi then
+		local rand = io.open('/dev/hwrng', 'rb'):read(4)
+		local seed = rand:byte(1) + rand:byte(2)*256 + rand:byte(3)*65536 + rand:byte(4)*16777216
+		love.math.setRandomSeed(seed)
+	end
 	
 	local album_dir = "pictures"
 	album_list = {}

@@ -51,7 +51,7 @@ end
 function Picture:load(filename)
     -- Free image memory (for raspberry)
 	self.img = nil
-	collectgarbage("step", 3)
+	collectgarbage("step", 5)
 	
 	self.fade:reset()
 	

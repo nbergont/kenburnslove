@@ -3,9 +3,6 @@ Title = Object:extend()
 
 local title_font = love.graphics.newFont("Hughs.otf", 500)
 
-local is_raspberry_pi = love.system.getOS() == "Linux" and io.popen('uname -n','r'):read('*l') == "pilove"
-
-
 function Title:new()
 	self.label = ""
 	self.fade = Fade(2, 5, 1)
