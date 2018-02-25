@@ -1,21 +1,20 @@
 require "fade"
 Title = Object:extend()
 
-local title_duration = 6
-local title_transition = 2
-local title_wratio = 0.8
-local title_font = love.graphics.newFont("Hughs.otf", 200)
+local title_font = love.graphics.newFont("Hughs.otf", 500)
+
+function is_raspberry_pi()
+	return love.system.getOS() == "Linux" and io.popen('uname -n','r'):read('*l') == "pilove"
+end
+
 
 function Title:new()
 	self.label = ""
 	self.fade = Fade(2, 5, 1)
 	self.shader = love.graphics.newShader("blur.glsl")
-	self.canvas1 = love.graphics.newCanvas(love.graphics.getWidth(), love.graphics.getHeight())
-	self.canvas2 = love.graphics.newCanvas(love.graphics.getWidth(), love.graphics.getHeight())
-	self.is_render = false
-	
+	self.canvas_blur = love.graphics.newCanvas(love.graphics.getWidth(), love.graphics.getHeight())
+	self.canvas_title = love.graphics.newCanvas(love.graphics.getWidth(), love.graphics.getHeight())
 end
-
 
 local function center_print(label, font, size_ratio, x, y, w, h)
 
@@ -37,8 +36,14 @@ function Title:render()
 	local sub_title = self.label:match("%((.+)%)")
 	local main_title = self.label:gsub("%s+%((.+)%)", "")
 	
-	-- Render black title to canvas (for blur effect)
-	love.graphics.setCanvas(self.canvas1)
+	-- Hack on RPI where glClear() not working on canvas !
+	if is_raspberry_pi() then
+		self.canvas_blur = love.graphics.newCanvas(love.graphics.getWidth(), love.graphics.getHeight())
+		self.canvas_title = love.graphics.newCanvas(love.graphics.getWidth(), love.graphics.getHeight())
+	end
+	
+	-- Render black title to canvas_blur (for drop shadow effect)
+	love.graphics.setCanvas(self.canvas_blur)
 	love.graphics.clear()
 	love.graphics.setColor(0, 0, 0, 255)
 	love.graphics.setFont(title_font)
@@ -47,12 +52,13 @@ function Title:render()
 	if sub_title then
 		center_print(sub_title, title_font, 0.6, 0, love.graphics.getHeight()/2, love.graphics.getWidth(), love.graphics.getHeight()/2)
 	end
-	-- Blur effect on canvas
-	love.graphics.setCanvas(self.canvas2)
+	
+	-- Blur effect on canvas_blur
+	love.graphics.setCanvas(self.canvas_title)
 	love.graphics.clear()
-	self.shader:send("blurRadius", love.graphics.getWidth()*0.001)
+	self.shader:send("blurRadius", love.graphics.getWidth()*0.002)
 	love.graphics.setShader(self.shader)
-	love.graphics.draw(self.canvas1)
+	love.graphics.draw(self.canvas_blur)
 	love.graphics.setShader()
 	
 	-- draw normal title
@@ -63,12 +69,10 @@ function Title:render()
 	end
 	love.graphics.setCanvas()
 	
-	self.is_render = true
 end
 
 function Title:setLabel(label)
 	self.label = label
-	self.is_render = false
 	self.fade:reset()
 	self:render()
 end
@@ -87,10 +91,6 @@ function Title:update(dt)
 end
 
 function Title:draw()
-	if not self.is_render then
-		self:render()
-	end
-
 	love.graphics.setColor(255, 255, 255, 255 * self.fade.alpha)
-	love.graphics.draw(self.canvas2)
+	love.graphics.draw(self.canvas_title)
 end
