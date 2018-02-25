@@ -26,8 +26,8 @@ Beautiful Ken Burns slideshow with Love2d (raspberry compatible)
 
 ## Raspberry Pi
 - Use pilove : http://pilove.mitako.eu/ 
-- Or use my customised version of pilove (to upload):
+- Or use my customised version of pilove [Download](https://github.com/nbergont/kenburnslove/releases/download/V1.0/pilove-0.4_ro_usb.img.zip):
     - Upgraded with pilove 0.4 (LÖVE 0.10.2)
 	- Read-only filesystem (more robust)
-	- Auto-launch love programm on usb-key
-- On Raspberry Pi pictures must have maximum resolution of 4096*4096 (GPU limitation)
+	- Auto-launch love program on usb-key (clone this repository on usb-key root directory and add your pictures)
+- On Raspberry Pi pictures must have maximum resolution of 2048*2048 (GPU limitation)
