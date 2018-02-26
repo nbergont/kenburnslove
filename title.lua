@@ -31,12 +31,6 @@ function Title:render()
 	local sub_title = self.label:match("%((.+)%)")
 	local main_title = self.label:gsub("%s+%((.+)%)", "")
 	
-	-- Hack on RPI where glClear() not working on canvas !
-	if is_raspberry_pi then
-		self.canvas_blur = love.graphics.newCanvas(love.graphics.getWidth(), love.graphics.getHeight())
-		self.canvas_title = love.graphics.newCanvas(love.graphics.getWidth(), love.graphics.getHeight())
-	end
-	
 	-- Render black title to canvas_blur (for drop shadow effect)
 	love.graphics.setCanvas(self.canvas_blur)
 	love.graphics.clear()
@@ -52,6 +46,7 @@ function Title:render()
 	love.graphics.setCanvas(self.canvas_title)
 	love.graphics.clear()
 	love.graphics.setShader(self.shader)
+	love.graphics.draw(self.canvas_blur)
 	love.graphics.draw(self.canvas_blur)
 	love.graphics.setShader()
 	

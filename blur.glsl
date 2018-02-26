@@ -3,8 +3,9 @@
 // a gaussian blur. Look at the "Blur (convoluted)" examples instead.
 
 #define BLUR_RADIUS 3.0
-#define SAMPLE_RANGE 3
-#define SAMPLE_RANGE_FLOAT 3.0
+#define SAMPLE_RANGE 2
+#define SAMPLE_RANGE_FLOAT 2.0
+
 vec4 effect(vec4 color, Image currentTexture, vec2 texCoords, vec2 screenCoords){
   vec4 sum = vec4(0);
   for(int x = -SAMPLE_RANGE; x < SAMPLE_RANGE + 1; x++){
