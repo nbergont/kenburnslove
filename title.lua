@@ -5,7 +5,7 @@ local title_font = love.graphics.newFont("Hughs.otf", 500)
 
 function Title:new()
 	self.label = ""
-	self.fade = Fade(2, 5, 1)
+	self.fade = Fade(config.fadein_title, config.display_title, config.fadeout_title)
 	self.shader = love.graphics.newShader("blur.glsl")
 	self.canvas_blur = love.graphics.newCanvas(love.graphics.getWidth(), love.graphics.getHeight())
 	self.canvas_title = love.graphics.newCanvas(love.graphics.getWidth(), love.graphics.getHeight())

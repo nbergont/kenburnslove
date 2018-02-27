@@ -40,7 +40,7 @@ function Picture:new()
 	self.img = nil
 
 	self.elapsed = 0 
-	self.fade = Fade(0, 8, 2)
+	self.fade = Fade(0, config.display_picture, config.fade_picture)
 	
     -- Thread variables
 	self.thread = love.thread.newThread(threadCode)
