@@ -66,7 +66,7 @@ function Picture:randomize()
     -- Full screen ratio
     local ratio = math.max(love.graphics.getWidth()/self.img:getWidth(), 
 						   love.graphics.getHeight()/self.img:getHeight())
-	
+
     -- Z
 	self.sz = generate(ratio, ratio*picture_max_zoom);
 	self.dz = generate(ratio, ratio*picture_max_zoom);

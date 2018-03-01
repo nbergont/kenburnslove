@@ -28,8 +28,7 @@ function love.load(arg)
 	-- Randomize seed on rpi
 	if is_raspberry_pi then
 		local rand = io.open('/dev/hwrng', 'rb'):read(4)
-		--local seed = rand:byte(1) + rand:byte(2)*256 + rand:byte(3)*65536 + rand:byte(4)*16777216
-		local seed = string.unpack("I4", rand)
+		local seed = rand:byte(1) + rand:byte(2)*256 + rand:byte(3)*65536 + rand:byte(4)*16777216
 		love.math.setRandomSeed(seed)
 	end
 	
@@ -49,6 +48,8 @@ function love.load(arg)
 	album = Album()
 	album:set(album_list[1])
 	index = 1
+	
+	shader = love.graphics.newShader("vignette.glsl")
 
 end
 
@@ -67,8 +68,19 @@ function love.update(dt)
 
 end
 
+local canvas = love.graphics.newCanvas(love.graphics.getWidth(), love.graphics.getHeight())
+	
+
 function love.draw()
+	
+
 	album:draw()
+	
+	love.graphics.setShader(shader)
+	love.graphics.setColor(0, 0, 0, 255)
+	love.graphics.draw(canvas)
+	love.graphics.setShader()
+	
 	
 	--love.graphics.setColor(255, 255, 255, 255)
 	--love.graphics.print("FPS: "..tostring(love.timer.getFPS( )), 10, 10)
