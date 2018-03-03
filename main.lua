@@ -7,10 +7,13 @@ config = {
 	display_picture = 8,
 	fade_picture = 2,
 	picture_by_album = 15,
+	picture_max_zoom = 1.4,
 	
 	display_title = 5,
 	fadein_title = 2,
-	fadeout_title = 1
+	fadeout_title = 1,
+	
+	vignette_shader = true
 }
 
 function shuffle(tbl)
@@ -49,7 +52,9 @@ function love.load(arg)
 	album:set(album_list[1])
 	index = 1
 	
-	shader = love.graphics.newShader("vignette.glsl")
+	if config.vignette_shader then
+		global_shader = love.graphics.newShader("vignette.glsl")
+	end
 
 end
 
@@ -70,7 +75,9 @@ end
 
 function love.draw()
 	
-	love.graphics.setShader(shader)
+	if global_shader then
+		love.graphics.setShader(global_shader)
+	end
 	album:draw()
 	love.graphics.setShader()
 	
@@ -85,5 +92,5 @@ function love.keypressed(key)
 end
 
 function love.errhand(msg)
-	love.event.quit(2)
+	--love.event.quit(1)
 end

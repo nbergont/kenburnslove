@@ -32,8 +32,6 @@ local img = love.image.newImageData(filename)
 -- TODO : resize image before send to GPU 
 channel:push(img)
 ]]
-
-local picture_max_zoom = 1.4 -- Ratio
 	
 function Picture:new()
 	
@@ -68,8 +66,8 @@ function Picture:randomize()
 						   love.graphics.getHeight()/self.img:getHeight())
 
     -- Z
-	self.sz = generate(ratio, ratio*picture_max_zoom);
-	self.dz = generate(ratio, ratio*picture_max_zoom);
+	self.sz = generate(ratio, ratio*config.picture_max_zoom);
+	self.dz = generate(ratio, ratio*config.picture_max_zoom);
 	self.z = self.sz
 	-- X
 	self.sx = generate(0, self.img:getWidth()*(self.sz - ratio))
