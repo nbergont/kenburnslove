@@ -61,26 +61,18 @@ function love.update(dt)
 		elapsed = 0
 		if index > #album_list then
 			shuffle(album_list)
-			index = 1 
+			index = 1
 		end
 		album:set(album_list[index])
 	end
-
-end
-
-local canvas = love.graphics.newCanvas(love.graphics.getWidth(), love.graphics.getHeight())
 	
+end
 
 function love.draw()
 	
-
-	album:draw()
-	
 	love.graphics.setShader(shader)
-	love.graphics.setColor(0, 0, 0, 255)
-	love.graphics.draw(canvas)
+	album:draw()
 	love.graphics.setShader()
-	
 	
 	--love.graphics.setColor(255, 255, 255, 255)
 	--love.graphics.print("FPS: "..tostring(love.timer.getFPS( )), 10, 10)
@@ -92,6 +84,6 @@ function love.keypressed(key)
    end
 end
 
--- function love.errhand(msg)
-	-- return
--- end
+function love.errhand(msg)
+	love.event.quit(2)
+end
