@@ -35,7 +35,6 @@ function Album:set(dir)
 	self.elapsed = 0
 	
 	-- Wait first pictures
-	self.pcurrent.fade:set(config.fade_picture, config.display_picture - config.fade_picture, config.fade_picture)
 	self.pcurrent:wait()
 	self.pnext:wait()
 end
@@ -56,7 +55,6 @@ function Album:update(dt)
 				self.pcurrent:load(nil)
 			else
 				self.pcurrent:load(self.list[self.index])
-				self.pcurrent.fade:set(0, config.display_picture, config.fade_picture)
 			end
 	
 			self.pcurrent, self.pnext = self.pnext, self.pcurrent -- Swap picture

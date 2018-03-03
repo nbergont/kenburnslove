@@ -38,7 +38,7 @@ function Picture:new()
 	self.img = nil
 
 	self.elapsed = 0 
-	self.fade = Fade(0, config.display_picture, config.fade_picture)
+	self.fade = Fade(config.fade_picture, config.display_picture, config.fade_picture)
 	
     -- Thread variables
 	self.thread = love.thread.newThread(threadCode)
@@ -60,24 +60,46 @@ function Picture:load(filename)
 end
 
 function Picture:randomize()
+	
+	local wratio = love.graphics.getWidth()/self.img:getWidth()
+	local hratio = love.graphics.getHeight()/self.img:getHeight()
+	
+	if self.img:getWidth() < self.img:getHeight() then -- Portrait
 
-    -- Full screen ratio
-    local ratio = math.max(love.graphics.getWidth()/self.img:getWidth(), 
-						   love.graphics.getHeight()/self.img:getHeight())
+		-- Z
+		self.sz = hratio*config.picture_max_zoom*1.4
+		self.dz = self.sz
+		self.z = self.sz
+		
+		-- Fixed center X
+		self.sx = -(self.img:getWidth()*wratio - self.img:getWidth()*self.sz)/2
+		self.dx = self.sx
+		self.x = self.sx
+		
+		-- Y
+		self.sy = generate(0, self.img:getHeight()*(self.sz - hratio))
+		self.dy = generate(0, self.img:getHeight()*(self.dz - hratio))
+		self.y = self.sy
+	
+	else -- Landscape
 
-    -- Z
-	self.sz = generate(ratio, ratio*config.picture_max_zoom);
-	self.dz = generate(ratio, ratio*config.picture_max_zoom);
-	self.z = self.sz
-	-- X
-	self.sx = generate(0, self.img:getWidth()*(self.sz - ratio))
-	self.dx = generate(0, self.img:getWidth()*(self.dz - ratio))
-	self.x = self.sx
-	-- Y
-	self.sy = generate(0, self.img:getHeight()*(self.sz - ratio))
-	self.dy = generate(0, self.img:getHeight()*(self.dz - ratio))
-	self.y = self.sy
+		-- Z
+		self.sz = generate(wratio, wratio*config.picture_max_zoom)
+		self.dz = generate(wratio, wratio*config.picture_max_zoom)
+		self.z = self.sz
+	
+		-- X
+		self.sx = generate(0, self.img:getWidth()*(self.sz - wratio))
+		self.dx = generate(0, self.img:getWidth()*(self.dz - wratio))
+		self.x = self.sx
+		
+		-- Y
+		self.sy = generate(0, self.img:getHeight()*(self.sz - wratio))
+		self.dy = generate(0, self.img:getHeight()*(self.dz - wratio))
+		self.y = self.sy
 
+	end
+    
 	self.fade:reset()
 end
 
@@ -95,7 +117,6 @@ end
 
 function Picture:update(dt)
 	
-	
     -- Get thread error
     local merror = self.thread:getError()
     assert( not merror, merror )
@@ -111,7 +132,6 @@ function Picture:update(dt)
 	
 		self.fade:update(dt)
 		local p = self.fade:progress()
-		
 		
 		-- Update picture coordinate
 		self.x = interpolate(p, self.sx, self.dx)

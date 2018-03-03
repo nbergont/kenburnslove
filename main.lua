@@ -4,7 +4,7 @@ require "album"
 is_raspberry_pi = love.system.getOS() == "Linux" and io.popen('uname -n','r'):read('*l') == "pilove"
 
 config = {
-	display_picture = 8,
+	display_picture = 6,
 	fade_picture = 2,
 	picture_by_album = 15,
 	picture_max_zoom = 1.4,
