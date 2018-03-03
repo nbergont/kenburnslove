@@ -47,7 +47,6 @@ function love.load(arg)
 	
 	shuffle(album_list)
 	
-	
 	album = Album()
 	album:set(album_list[1])
 	index = 1
@@ -80,9 +79,7 @@ function love.draw()
 	end
 	album:draw()
 	love.graphics.setShader()
-	
-	--love.graphics.setColor(255, 255, 255, 255)
-	--love.graphics.print("FPS: "..tostring(love.timer.getFPS( )), 10, 10)
+
 end
 
 function love.keypressed(key)
@@ -92,5 +89,5 @@ function love.keypressed(key)
 end
 
 function love.errhand(msg)
-	--love.event.quit(1)
+	love.event.quit(1)
 end

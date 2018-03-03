@@ -1,35 +1,18 @@
 require "fade"
 Picture = Object:extend()
 
-local function easeInOutQuad(t)
-	if t<.5 then return 2*t*t else return -1+(4-2*t)*t end
+local function interpolate(p, v1, v2)
+	return p * (v2 - v1) + v1
 end
 
-local function easeInOutCubic(t)
-	if t<.5 then return 4*t*t*t else return (t-1)*(2*t-2)*(2*t-2)+1 end
-end
-
-local function easeInOutQuart(t)
-	if t<.5 then return 8*t*t*t*t else return 1-8*(t-1)*(t-1)*(t-1)*(t-1) end
-end
-
-local function interpolate(p, x1, x2)
-	return p * (x2 - x1) + x1
-end
-
-local function generate(x1, x2)
-	if x1 < x2 then
-		return love.math.random() * (x2 - x1) + x1
-	else
-		return love.math.random() * (x1 - x2) + x2
-	end
+local function rand_interval(v1, v2)
+	return love.math.random() * (v2 - v1) + v1
 end
 
 local threadCode = [[
 require("love.image")
 local filename, channel = ...
 local img = love.image.newImageData(filename)
--- TODO : resize image before send to GPU 
 channel:push(img)
 ]]
 	
@@ -77,25 +60,25 @@ function Picture:randomize()
 		self.x = self.sx
 		
 		-- Y
-		self.sy = generate(0, self.img:getHeight()*(self.sz - hratio))
-		self.dy = generate(0, self.img:getHeight()*(self.dz - hratio))
+		self.sy = rand_interval(0, self.img:getHeight()*(self.sz - hratio))
+		self.dy = rand_interval(0, self.img:getHeight()*(self.dz - hratio))
 		self.y = self.sy
 	
 	else -- Landscape
 
 		-- Z
-		self.sz = generate(wratio, wratio*config.picture_max_zoom)
-		self.dz = generate(wratio, wratio*config.picture_max_zoom)
+		self.sz = rand_interval(wratio, wratio*config.picture_max_zoom)
+		self.dz = rand_interval(wratio, wratio*config.picture_max_zoom)
 		self.z = self.sz
 	
 		-- X
-		self.sx = generate(0, self.img:getWidth()*(self.sz - wratio))
-		self.dx = generate(0, self.img:getWidth()*(self.dz - wratio))
+		self.sx = rand_interval(0, self.img:getWidth()*(self.sz - wratio))
+		self.dx = rand_interval(0, self.img:getWidth()*(self.dz - wratio))
 		self.x = self.sx
 		
 		-- Y
-		self.sy = generate(0, self.img:getHeight()*(self.sz - wratio))
-		self.dy = generate(0, self.img:getHeight()*(self.dz - wratio))
+		self.sy = rand_interval(0, self.img:getHeight()*(self.sz - wratio))
+		self.dy = rand_interval(0, self.img:getHeight()*(self.dz - wratio))
 		self.y = self.sy
 
 	end

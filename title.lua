@@ -27,9 +27,12 @@ local function center_print(label, font, size_ratio, x, y, w, h)
 end
 
 function Title:render()
-
-	local sub_title = self.label:match("%((.+)%)")
+	
 	local main_title = self.label:gsub("%s+%((.+)%)", "")
+	local main_title_ratio = 0.8
+	local sub_title = self.label:match("%((.+)%)")
+	local sub_title_ratio = 0.6
+	
 	
 	-- Render black title to canvas_blur (for drop shadow effect)
 	love.graphics.setCanvas(self.canvas_blur)
@@ -37,9 +40,9 @@ function Title:render()
 	love.graphics.setColor(0, 0, 0, 255)
 	love.graphics.setFont(title_font)
 	
-	center_print(main_title, title_font, 0.8, 0, 0, love.graphics.getWidth(), love.graphics.getHeight()*0.8)
+	center_print(main_title, title_font, main_title_ratio, 0, 0, love.graphics.getWidth(), love.graphics.getHeight()*0.8)
 	if sub_title then
-		center_print(sub_title, title_font, 0.6, 0, love.graphics.getHeight()/2, love.graphics.getWidth(), love.graphics.getHeight()/2)
+		center_print(sub_title, title_font, sub_title_ratio, 0, love.graphics.getHeight()/2, love.graphics.getWidth(), love.graphics.getHeight()/2)
 	end
 	
 	-- Blur effect on canvas_blur
@@ -52,9 +55,9 @@ function Title:render()
 	
 	-- draw normal title
 	love.graphics.setColor(255, 255, 255, 255)
-	center_print(main_title, title_font, 0.8, 0, 0, love.graphics.getWidth(), love.graphics.getHeight()*0.8)
+	center_print(main_title, title_font, main_title_ratio, 0, 0, love.graphics.getWidth(), love.graphics.getHeight()*0.8)
 	if sub_title then
-		center_print(sub_title, title_font, 0.6, 0, love.graphics.getHeight()/2, love.graphics.getWidth(), love.graphics.getHeight()/2)
+		center_print(sub_title, title_font, sub_title_ratio, 0, love.graphics.getHeight()/2, love.graphics.getWidth(), love.graphics.getHeight()/2)
 	end
 	love.graphics.setCanvas()
 	

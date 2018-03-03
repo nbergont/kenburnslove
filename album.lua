@@ -16,7 +16,7 @@ function Album:set(dir)
 	self.list = {}
 	local files = love.filesystem.getDirectoryItems(dir)
 	for k, file in ipairs(files) do
-		if file:match(".[Jj][Pp][Gg]$") then -- Only jpeg
+		if file:match(".[Jj][Pp][Gg]$") then -- Only jpg
 			table.insert(self.list, dir .. "/" .. file)
 		end
 	end
@@ -46,7 +46,7 @@ end
 function Album:update(dt)
 
 	-- Update picture
-	if self.elapsed > 2 then
+	if self.elapsed > config.fadein_title then
 		if self.pcurrent:isFinished() then
 
 			-- Load next picture
