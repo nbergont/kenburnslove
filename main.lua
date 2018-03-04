@@ -50,6 +50,7 @@ function love.load(arg)
 	album = Album()
 	album:set(album_list[1])
 	index = 1
+	--itime = 0
 	
 	if config.vignette_shader then
 		global_shader = love.graphics.newShader("vignette.glsl")
@@ -69,12 +70,13 @@ function love.update(dt)
 		end
 		album:set(album_list[index])
 	end
-	
+	--itime = itime + dt
 end
 
 function love.draw()
 	
 	if global_shader then
+		--global_shader:send("iTime", itime)
 		love.graphics.setShader(global_shader)
 	end
 	album:draw()
