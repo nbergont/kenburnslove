@@ -50,13 +50,13 @@ function Picture:randomize()
 	if self.img:getWidth() < self.img:getHeight() then -- Portrait
 
 		-- Z
-		self.sz = hratio*config.picture_max_zoom*1.4
-		self.dz = self.sz
+		self.sz = rand_interval(hratio, hratio*config.picture_max_zoom*1.4)
+		self.dz = rand_interval(hratio, hratio*config.picture_max_zoom*1.4)
 		self.z = self.sz
 		
 		-- Fixed center X
 		self.sx = -(self.img:getWidth()*wratio - self.img:getWidth()*self.sz)/2
-		self.dx = self.sx
+		self.dx = -(self.img:getWidth()*wratio - self.img:getWidth()*self.dz)/2
 		self.x = self.sx
 		
 		-- Y
@@ -66,19 +66,20 @@ function Picture:randomize()
 	
 	else -- Landscape
 
+		local ratio = math.max(wratio, hratio)
 		-- Z
-		self.sz = rand_interval(wratio, wratio*config.picture_max_zoom)
-		self.dz = rand_interval(wratio, wratio*config.picture_max_zoom)
+		self.sz = rand_interval(ratio, ratio*config.picture_max_zoom)
+		self.dz = rand_interval(ratio, ratio*config.picture_max_zoom)
 		self.z = self.sz
 	
 		-- X
-		self.sx = rand_interval(0, self.img:getWidth()*(self.sz - wratio))
-		self.dx = rand_interval(0, self.img:getWidth()*(self.dz - wratio))
+		self.sx = rand_interval(0, self.img:getWidth()*(self.sz - ratio))
+		self.dx = rand_interval(0, self.img:getWidth()*(self.dz - ratio))
 		self.x = self.sx
 		
 		-- Y
-		self.sy = rand_interval(0, self.img:getHeight()*(self.sz - wratio))
-		self.dy = rand_interval(0, self.img:getHeight()*(self.dz - wratio))
+		self.sy = rand_interval(0, self.img:getHeight()*(self.sz - ratio))
+		self.dy = rand_interval(0, self.img:getHeight()*(self.dz - ratio))
 		self.y = self.sy
 
 	end
