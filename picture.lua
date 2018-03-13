@@ -112,9 +112,10 @@ function Picture:update(dt)
 		self:randomize()
 	end
 
+	self.fade:update(dt)
+
 	if self.img then
 	
-		self.fade:update(dt)
 		local p = self.fade:progress()
 		
 		-- Update picture coordinate

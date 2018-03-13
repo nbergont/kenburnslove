@@ -50,7 +50,6 @@ function Title:render()
 	love.graphics.clear()
 	love.graphics.setShader(self.shader)
 	love.graphics.draw(self.canvas_blur)
-	love.graphics.draw(self.canvas_blur)
 	love.graphics.setShader()
 	
 	-- draw normal title

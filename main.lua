@@ -30,7 +30,9 @@ function love.load(arg)
 	
 	-- Randomize seed on rpi
 	if is_raspberry_pi then
-		local rand = io.open('/dev/hwrng', 'rb'):read(4)
+		local hwrng = io.open('/dev/hwrng', 'rb')
+		local rand = hwrng:read(4)
+		hwrng:close()
 		local seed = rand:byte(1) + rand:byte(2)*256 + rand:byte(3)*65536 + rand:byte(4)*16777216
 		love.math.setRandomSeed(seed)
 	end

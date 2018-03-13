@@ -4,9 +4,9 @@
 // Author:  Landon Manning
 // Email:   LManning17@gmail.com
 
-uniform float u_radius        = 0.75;
-uniform float u_softness      = 0.35;
-uniform float u_opacity       = 0.5;
+const float u_radius        = 0.75;
+const float u_softness      = 0.35;
+const float u_opacity       = 0.5;
 
 vec4 effect(vec4 color, sampler2D texture, vec2 texCoords, vec2 screenCoords) {
 	vec4 texColor = texture2D(texture, texCoords);
