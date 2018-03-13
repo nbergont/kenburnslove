@@ -1,0 +1,14 @@
+#!/bin/bash
+#pulseaudio --start
+
+mount -o ro,utf8=true /dev/sda1 /media
+
+while true; do 
+  /usr/bin/love /media
+  if [[ "$?" -eq 0 ]]; then 
+    break
+  fi
+  sleep 1
+done
+
+exit 0
