@@ -52,6 +52,7 @@ function love.load(arg)
 	album = Album()
 	album:set(album_list[1])
 	index = 1
+	drop_frame = false
 	--itime = 0
 	
 	if config.vignette_shader then
@@ -61,7 +62,11 @@ function love.load(arg)
 end
 
 function love.update(dt)
-	album:update(dt)
+
+	if not drop_frame then
+		album:update(dt)
+	end
+	drop_frame = false
 	
 	if album:isFinished() then
 		index = index + 1
@@ -71,6 +76,7 @@ function love.update(dt)
 			index = 1
 		end
 		album:set(album_list[index])
+		drop_frame = true
 	end
 	--itime = itime + dt
 end
