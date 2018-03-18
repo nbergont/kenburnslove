@@ -6,7 +6,7 @@ Beautiful Ken Burns slideshow with Love2d (raspberry compatible)
 - GPU optimised pan and zoom slideshow (very fluid)
 - Use love engine
 - Display album title
-- Fisher-Yates shuffle
+- Fisher-Yates shuffle (with /dev/hwrng on raspberry)
 - Customisable
 
 ## How to use

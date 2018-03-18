@@ -6,7 +6,7 @@ local function interpolate(p, v1, v2)
 end
 
 local function rand_interval(v1, v2)
-	return love.math.random() * (v2 - v1) + v1
+	return hwrandom() * (v2 - v1) + v1
 end
 
 local threadCode = [[

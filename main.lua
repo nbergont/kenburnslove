@@ -1,8 +1,6 @@
 Object = require "classic"
 require "album"
 
-is_raspberry_pi = love.system.getOS() == "Linux" and io.popen('uname -n','r'):read('*l') == "pilove"
-
 config = {
 	display_picture = 6,
 	fade_picture = 2,
@@ -16,10 +14,30 @@ config = {
 	vignette_shader = true
 }
 
+local hwrng_device = io.open('/dev/hwrng', 'rb') -- RPI reel random device
+
+function hwrng_read()
+	if hwrng_device then
+		local hr = hwrng_device:read(3)
+		local v3 = hr:byte(1) + hr:byte(2)*256 + hr:byte(3)*65536
+		return v3/16777215
+	end
+	-- Fall back
+	return love.math.random()
+end
+
+function hwrandom(size)
+	if size then
+		return math.ceil(hwrng_read()*size)
+	end
+	return hwrng_read()
+end
+
+
 function shuffle(tbl)
   local size = #tbl
   for i = size, 1, -1 do
-    local rand = love.math.random(size)
+    local rand = hwrandom(size)
     tbl[i], tbl[rand] = tbl[rand], tbl[i]
   end
 end
@@ -27,16 +45,7 @@ end
 function love.load(arg)
 	-- Hide cursor
 	love.mouse.setVisible(false)
-	
-	-- Randomize seed on rpi
-	if is_raspberry_pi then
-		local hwrng = io.open('/dev/hwrng', 'rb')
-		local rand = hwrng:read(4)
-		hwrng:close()
-		local seed = rand:byte(1) + rand:byte(2)*256 + rand:byte(3)*65536 + rand:byte(4)*16777216
-		love.math.setRandomSeed(seed)
-	end
-	
+
 	local album_dir = "pictures"
 	album_list = {}
 	local files = love.filesystem.getDirectoryItems(album_dir)
@@ -99,5 +108,8 @@ function love.keypressed(key)
 end
 
 function love.errhand(msg)
+	if hwrng_device then
+		hwrng_device:close()
+	end
 	love.event.quit(1)
 end
