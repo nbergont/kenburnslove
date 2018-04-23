@@ -48,10 +48,10 @@ function love.load(arg)
 
 	local album_dir = "pictures"
 	album_list = {}
-	local files = love.filesystem.getDirectoryItems(album_dir)
-	for k, file in ipairs(files) do
-		if love.filesystem.isDirectory(album_dir .. "/" .. file) then
-			table.insert(album_list, album_dir .. "/" .. file)
+	local dirs = love.filesystem.getDirectoryItems(album_dir)
+	for k, dir in ipairs(dirs) do
+		if love.filesystem.getInfo(album_dir .. "/" .. dir).type == "directory" then
+			table.insert(album_list, album_dir .. "/" .. dir)
 		end
 		
 	end

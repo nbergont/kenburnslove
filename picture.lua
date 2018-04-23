@@ -31,8 +31,11 @@ end
 
 function Picture:load(filename)
     -- Free image memory (for raspberry)
+	if self.img then
+		self.img:release()
+	end
 	self.img = nil
-	collectgarbage("step", 5)
+	--collectgarbage("step", 5)
 	
 	self.fade:reset()
 	
@@ -128,7 +131,7 @@ end
 
 function Picture:draw()
 	if self.img then
-		love.graphics.setColor(255, 255, 255, 255 * self.fade.alpha)
+		love.graphics.setColor(1, 1, 1, self.fade.alpha)
 		love.graphics.draw(self.img, -self.x, -self.y, 0, self.z, self.z)
 	end
 end

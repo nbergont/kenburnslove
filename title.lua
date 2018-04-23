@@ -37,7 +37,7 @@ function Title:render()
 	-- Render black title to canvas_blur (for drop shadow effect)
 	love.graphics.setCanvas(self.canvas_blur)
 	love.graphics.clear()
-	love.graphics.setColor(0, 0, 0, 255)
+	love.graphics.setColor(0, 0, 0, 1)
 	love.graphics.setFont(title_font)
 	
 	center_print(main_title, title_font, main_title_ratio, 0, 0, love.graphics.getWidth(), love.graphics.getHeight()*0.8)
@@ -53,7 +53,7 @@ function Title:render()
 	love.graphics.setShader()
 	
 	-- draw normal title
-	love.graphics.setColor(255, 255, 255, 255)
+	love.graphics.setColor(1, 1, 1, 1)
 	center_print(main_title, title_font, main_title_ratio, 0, 0, love.graphics.getWidth(), love.graphics.getHeight()*0.8)
 	if sub_title then
 		center_print(sub_title, title_font, sub_title_ratio, 0, love.graphics.getHeight()/2, love.graphics.getWidth(), love.graphics.getHeight()/2)
@@ -82,6 +82,6 @@ function Title:update(dt)
 end
 
 function Title:draw()
-	love.graphics.setColor(255, 255, 255, 255 * self.fade.alpha)
+	love.graphics.setColor(1, 1, 1, self.fade.alpha)
 	love.graphics.draw(self.canvas_title)
 end
