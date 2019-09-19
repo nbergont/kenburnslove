@@ -80,6 +80,7 @@ function love.update(dt)
 	if album:isFinished() then
 		index = index + 1
 		elapsed = 0
+		collectgarbage('collect')
 		if index > #album_list then
 			shuffle(album_list)
 			index = 1
